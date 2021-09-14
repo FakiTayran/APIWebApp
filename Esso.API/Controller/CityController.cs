@@ -2,6 +2,7 @@
 using Esso.Entity.Dtos;
 using Esso.Entity.Models;
 using Esso.Entity.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace Esso.API.Controller
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize(Policy = "City")]
     public class CityController : ControllerBase
     {
         private readonly ICityService cityService;
@@ -24,7 +26,26 @@ namespace Esso.API.Controller
         [HttpGet("GetCities/{CountryID}")]
         public IActionResult GetCities(int CountryID)
         {
-            return null;
+            var cities = cityService.GetByCountryID(CountryID);
+
+            if (cities.Count > 0)
+            {
+                return Ok(new GeneralResponse<List<City>>
+                {
+                    Result = cities,
+                    Code = 1,
+                    IsError = false
+                });
+            }
+            else
+            {
+                return Ok(new GeneralResponse<string>
+                {
+                    Result = "Gösterilecek Şehir Yok",
+                    Code = 1,
+                    IsError = true
+                });
+            }
         }
 
         [HttpPost("CreateCity")]

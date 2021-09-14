@@ -10,5 +10,6 @@ namespace Esso.Business.Abstract
 {
     public interface ICityService : IAsyncRepository<City>
     {
+        List<City> GetByCountryID(int CountryID);
     }
 }

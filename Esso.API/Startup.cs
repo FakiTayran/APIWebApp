@@ -66,7 +66,6 @@ namespace Esso.API
             {
                 options.AddPolicy("Country", policy => policy.RequireClaim("country"));
                 options.AddPolicy("City", policy => policy.RequireClaim("city"));
-
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>

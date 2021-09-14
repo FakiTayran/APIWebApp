@@ -2,6 +2,7 @@
 using Esso.DataAccess.Concrete;
 using Esso.Entity;
 using Esso.Entity.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace Esso.API.Controller
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize("Country")]
     public class CountryController : ControllerBase
     {
         private readonly ICountryService countryService;

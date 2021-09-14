@@ -27,6 +27,11 @@ namespace Esso.Business.Concrete
              await cityDal.DeleteAsync(entity);
         }
 
+        public List<City> GetByCountryID(int CountryID)
+        {
+            return cityDal.GetByCountryID(CountryID);
+        }
+
         public async Task<City> GetByIdAsync(int id)
         {
             return await cityDal.GetByIdAsync(id);
