@@ -41,6 +41,7 @@ namespace Esso.DataAccess.Concrete
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Set<T>().Update(entity);

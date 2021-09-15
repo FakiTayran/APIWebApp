@@ -24,16 +24,23 @@ namespace Esso.API.Controller
             countryService = _countryService;
         }
         [HttpGet("GetCountries")]
-        public async Task<IActionResult> GetCountries()
+        public async Task<IActionResult> GetCountries(int pageSize,int pageNumber)
         {
             try
             {
                 var countries = await countryService.ListAllAsync();
+                var pagination = new Pagination<Country>
+                {
+                    PageSize = pageSize,
+                    PageNumber = pageNumber,
+                    TotalRecords = countries.ToList().Count,
+                    Content = countryService.Pagination(pageSize, pageNumber)
+                };
                 if (countries.Count > 0)
                 {
-                    return Ok(new GeneralResponse<List<Country>>
+                    return Ok(new GeneralResponse<Pagination<Country>>
                     {
-                        Result = countries,
+                        Result = pagination,
                         Code = 1,
                         IsError = false
                     });

@@ -24,15 +24,21 @@ namespace Esso.API.Controller
             cityService = _cityService;
         }
         [HttpGet("GetCities/{CountryID}")]
-        public IActionResult GetCities(int CountryID)
+        public async Task<IActionResult> GetCities(int CountryID,int pageSize,int pageNumber)
         {
-            var cities = cityService.GetByCountryID(CountryID);
-
+            var cities = await cityService.ListAllAsync();
+            var pagination = new Pagination<City>
+            {
+                PageSize = pageSize,
+                PageNumber = pageNumber,
+                TotalRecords = cities.ToList().Count,
+                Content = cityService.Pagination(CountryID,pageSize, pageNumber)
+            };
             if (cities.Count > 0)
             {
-                return Ok(new GeneralResponse<List<City>>
+                return Ok(new GeneralResponse<Pagination<City>>
                 {
-                    Result = cities,
+                    Result = pagination,
                     Code = 1,
                     IsError = false
                 });

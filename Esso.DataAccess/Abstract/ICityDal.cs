@@ -10,5 +10,8 @@ namespace Esso.DataAccess.Abstract
     public interface ICityDal : IAsyncRepository<City>
     {
         List<City> GetByCountryID(int CountryID);
+
+        List<City> Pagination(int countryID,int pageSize, int pageNumber);
+
     }
 }

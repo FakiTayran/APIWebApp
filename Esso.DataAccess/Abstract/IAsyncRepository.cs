@@ -19,5 +19,6 @@ namespace Esso.DataAccess.Abstract
 
         Task DeleteAsync(T entity);
 
+
     }
 }

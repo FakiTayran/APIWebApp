@@ -22,5 +22,10 @@ namespace Esso.DataAccess.Concrete
         {
             return dbContext.Cities.Where(x => x.CountryID == CountryID).ToList();
         }
+
+        public List<City> Pagination(int countryID,int pageSize, int pageNumber)
+        {
+            return dbContext.Cities.Where(x=>x.CountryID==countryID).OrderBy(x => x.Name).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+        }
     }
 }

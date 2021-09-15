@@ -11,5 +11,7 @@ namespace Esso.Business.Abstract
 {
     public interface ICountryService : IAsyncRepository<Country>
     {
+        List<Country> Pagination(int pageSize, int pageNumber);
+
     }
 }

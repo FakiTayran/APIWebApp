@@ -9,6 +9,6 @@ namespace Esso.DataAccess.Abstract
 {
     public interface ICountryDal : IAsyncRepository<Country>
     {
-
+        List<Country> Pagination(int pageSize, int pageNumber);
     }
 }

@@ -11,5 +11,8 @@ namespace Esso.Business.Abstract
     public interface ICityService : IAsyncRepository<City>
     {
         List<City> GetByCountryID(int CountryID);
+
+        List<City> Pagination(int countryID,int pageSize, int pageNumber);
+
     }
 }

@@ -42,6 +42,11 @@ namespace Esso.Business.Concrete
             return await cityDal.ListAllAsync();
         }
 
+        public List<City> Pagination(int countryID,int pageSize, int pageNumber)
+        {
+            return  cityDal.Pagination(countryID,pageSize, pageNumber);
+        }
+
         public async Task UpdateAsync(City entity)
         {
              await cityDal.UpdateAsync(entity);
