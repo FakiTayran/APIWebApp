@@ -1,5 +1,6 @@
 ﻿using Esso.DataAccess.EfCore;
 using Esso.Entity.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Esso.API.Controller
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromForm] LoginDto dto)
+        public async Task<IActionResult> Login(LoginDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +80,7 @@ namespace Esso.API.Controller
             });
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromForm] RegisterDto dto)
+        public async Task<IActionResult> Register(RegisterDto dto)
         {
             if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password) || string.IsNullOrEmpty(dto.ConfirmPassword))
             {
@@ -106,16 +107,16 @@ namespace Esso.API.Controller
 
             if (result.Succeeded)
             {
-                var identityUser = await _userManager.FindByNameAsync(dto.Email);
-                var resultIdentity = await _userManager.AddClaimAsync(identityUser, new Claim(dto.ClaimName, dto.ClaimName.ToLower()));
-                if (resultIdentity.Succeeded)
-                {
+                //var identityUser = await _userManager.FindByNameAsync(dto.Email);
+                //var resultIdentity = await _userManager.AddClaimAsync(identityUser, new Claim(dto.ClaimName, dto.ClaimName.ToLower()));
+                //if (resultIdentity.Succeeded)
+                //{
                     return Ok(new GeneralResponse<string>
                     {
                         Result = "Kullanıcı Başarıyla Oluşturuldu",
                         IsError= false
                     });
-                }
+                //}
 
             }
 
@@ -125,6 +126,13 @@ namespace Esso.API.Controller
                 Result = "Kullanıcı Oluşturulamadı",
                 IsError = true
             });
+        }
+
+        [HttpGet("IsAuthorize")]
+        [Authorize]
+        public IActionResult IsAuthorize()
+        {
+            return Ok();
         }
     }
 }

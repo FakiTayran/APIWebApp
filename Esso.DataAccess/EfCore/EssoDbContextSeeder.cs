@@ -17,7 +17,7 @@ namespace Esso.DataAccess.EfCore
         private static async Task SeedUsersAsync(
             UserManager<IdentityUser> userManager)
         {
-            var userName = "test@essso.com";
+            var userName = "test@esso.com";
             if (!await userManager.Users.AnyAsync(x => x.UserName == userName))
             {
                 var user = new IdentityUser()
@@ -29,50 +29,102 @@ namespace Esso.DataAccess.EfCore
                 await userManager.CreateAsync(user, "Esso123.");
             }
         }
-        private static void Seed(EssoDbContext db)
+        private static void SeedEntities(EssoDbContext db)
         {
             if (!db.Countries.Any())
             {
                 db.Countries.Add(new Country()
                 {
-                    Id = 1,
                     Name = "Türkiye"
                 });
+                db.SaveChanges();
                 db.Countries.Add(new Country()
                 {
-                    Id = 2,
                     Name = "Almanya"
                 });
+                db.SaveChanges();
             }
 
             if (!db.Cities.Any())
             {
                 db.Cities.Add(new City()
                 {
-                    Id = 1,
                     Name = "Ankara",
                     CountryID = 1,
                 });
                 db.Cities.Add(new City()
                 {
-                    Id = 2,
                     Name = "İstanbul",
+                    CountryID = 1,
+                });
+
+                db.Cities.Add(new City()
+                {
+                    Name = "İzmir",
+                    CountryID = 1,
+                });
+
+                db.Cities.Add(new City()
+                {
+                    Name = "Bursa",
+                    CountryID = 1,
+                });
+
+                db.Cities.Add(new City()
+                {
+                    Name = "Kayseri",
                     CountryID = 1,
                 });
                 db.Cities.Add(new City()
                 {
-                    Id = 3,
+                    Name = "Trabzon",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Rize",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Bolu",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Iğdır",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Urfa",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Antalya",
+                    CountryID = 1,
+                });
+                db.Cities.Add(new City()
+                {
+                    Name = "Muğla",
+                    CountryID = 1,
+                });
+
+                db.Cities.Add(new City()
+                {
                     Name = "Berlin",
                     CountryID = 2,
                 });
                 db.Cities.Add(new City()
                 {
-                    Id = 4,
                     Name = "Münih",
                     CountryID = 2,
                 });
-
+                db.SaveChanges();
             }
+
+
         }
         public static async Task<IHost> SeedAsync(this IHost host)
         {
@@ -86,7 +138,7 @@ namespace Esso.DataAccess.EfCore
 
                 if (env.IsDevelopment())
                 {
-                    Seed(db);
+                    SeedEntities(db);
                 }
             }
             return host;

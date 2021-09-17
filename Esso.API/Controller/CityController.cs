@@ -14,7 +14,7 @@ namespace Esso.API.Controller
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(Policy = "City")]
+    //[Authorize(Policy = "City")]
     public class CityController : ControllerBase
     {
         private readonly ICityService cityService;
@@ -23,35 +23,25 @@ namespace Esso.API.Controller
         {
             cityService = _cityService;
         }
-        [HttpGet("GetCities/{CountryID}")]
-        public async Task<IActionResult> GetCities(int CountryID,int pageSize,int pageNumber)
+        [HttpGet("GetCities/{CountryID}/{pageSize}/{pageNumber}")]
+        public async Task<IActionResult> GetCities(int CountryID, int pageSize, int pageNumber)
         {
-            var cities = await cityService.ListAllAsync();
+            var cities = cityService.GetByCountryID(CountryID);
             var pagination = new Pagination<City>
             {
                 PageSize = pageSize,
                 PageNumber = pageNumber,
                 TotalRecords = cities.ToList().Count,
-                Content = cityService.Pagination(CountryID,pageSize, pageNumber)
+                Content = cityService.Pagination(CountryID, pageSize, pageNumber),
             };
-            if (cities.Count > 0)
+
+            return Ok(new GeneralResponse<Pagination<City>>
             {
-                return Ok(new GeneralResponse<Pagination<City>>
-                {
-                    Result = pagination,
-                    Code = 1,
-                    IsError = false
-                });
-            }
-            else
-            {
-                return Ok(new GeneralResponse<string>
-                {
-                    Result = "Gösterilecek Şehir Yok",
-                    Code = 1,
-                    IsError = true
-                });
-            }
+                Result = pagination,
+                Code = 1,
+                IsError = false
+            });
+
         }
 
         [HttpPost("CreateCity")]
@@ -125,7 +115,7 @@ namespace Esso.API.Controller
                         IsError = false
                     });
                 }
-                else 
+                else
                 {
                     return Ok(new GeneralResponse<string>
                     {
@@ -147,14 +137,14 @@ namespace Esso.API.Controller
             }
         }
 
-        [HttpPut("UpdateCity/{id}")]
-        public async Task<IActionResult> UpdateCity(int id,[FromBody] CityDto cityDto)
+        [HttpGet("UpdateCity/{id}/{name}/{countryID}")]
+        public async Task<IActionResult> UpdateCity(int id, string name, int countryID)
         {
             try
             {
                 var city = await cityService.GetByIdAsync(id);
-                city.Name = cityDto.Name;
-                city.CountryID = cityDto.CountryID;
+                city.Name = name;
+                city.CountryID = countryID;
                 await cityService.UpdateAsync(city);
                 return Ok(new GeneralResponse<string>
                 {
@@ -172,7 +162,7 @@ namespace Esso.API.Controller
                     IsError = true
                 });
             }
-           
+
         }
 
 

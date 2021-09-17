@@ -62,6 +62,12 @@ namespace Esso.API
                             Encoding.UTF8.GetBytes(appSettings.JwtSecret))
                     };
                 });
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Country", policy => policy.RequireClaim("country"));
@@ -89,6 +95,8 @@ namespace Esso.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("MyPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();

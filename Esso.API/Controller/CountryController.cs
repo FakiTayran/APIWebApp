@@ -14,7 +14,7 @@ namespace Esso.API.Controller
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize("Country")]
+    //[Authorize("Country")]
     public class CountryController : ControllerBase
     {
         private readonly ICountryService countryService;
@@ -24,27 +24,36 @@ namespace Esso.API.Controller
             countryService = _countryService;
         }
         [HttpGet("GetCountries")]
-        public async Task<IActionResult> GetCountries(int pageSize,int pageNumber)
+        public async Task<IActionResult> GetCountries(/*int pageSize,int pageNumber*/)
         {
             try
             {
                 var countries = await countryService.ListAllAsync();
-                var pagination = new Pagination<Country>
-                {
-                    PageSize = pageSize,
-                    PageNumber = pageNumber,
-                    TotalRecords = countries.ToList().Count,
-                    Content = countryService.Pagination(pageSize, pageNumber)
-                };
                 if (countries.Count > 0)
                 {
-                    return Ok(new GeneralResponse<Pagination<Country>>
+                    return Ok(new GeneralResponse<List<Country>>
                     {
-                        Result = pagination,
+                        Result = countries,
                         Code = 1,
                         IsError = false
                     });
                 }
+                //var pagination = new Pagination<Country>
+                //{
+                //    PageSize = pageSize,
+                //    PageNumber = pageNumber,
+                //    TotalRecords = countries.ToList().Count,
+                //    Content = countryService.Pagination(pageSize, pageNumber)
+                //};
+                //if (countries.Count > 0)
+                //{
+                //    return Ok(new GeneralResponse<Pagination<Country>>
+                //    {
+                //        Result = pagination,
+                //        Code = 1,
+                //        IsError = false
+                //    });
+                //}
                 else
                 {
                     return Ok(new GeneralResponse<string>
